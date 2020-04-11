@@ -4,8 +4,38 @@ const express = require('express');
 // declarando a varival app
 const app = express();
 
-app.get('/', (request, response) => {
-  return response.json({ message: 'Hello World' });
+// metodo GET
+app.get('/projects', (request, response) => {
+  return response.json([
+    'Projeto 1',
+    'Projeto 2',
+  ]);
+});
+
+// metodo POST
+app.post('/projects', (request, response) => {
+  return response.json([
+    'Projeto 1',
+    'Projeto 2',
+    'Projeto 3',
+  ]);
+});
+
+// metodo PUT
+app.put('/projects/:id', (request, response) => {
+  return response.json([
+    'Projeto 4',
+    'Projeto 2',
+    'Projeto 3',
+  ]);
+});
+
+// metodo DELETE
+app.delete('/projects/:id', (request, response) => {
+  return response.json([
+    'Projeto 2',
+    'Projeto 3',
+  ]);
 });
 
 // porta

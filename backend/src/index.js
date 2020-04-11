@@ -1,36 +1,33 @@
 // importando o express
 const express = require('express');
+const { uuid } = require('uuidv4');
 
 // declarando a varival app
 const app = express();
 
 app.use(express.json());
 
+const projects = [];
+
 // metodo GET
 app.get('/projects', (request, response) => {
-  const { title, owner } = request.query;
+  // const { title, owner } = request.query;
 
-  console.log(title);
-  console.log(owner);
+  // console.log(title);
+  // console.log(owner);
 
-  return response.json([
-    'Projeto 1',
-    'Projeto 2',
-  ]);
+  return response.json(projects);
 });
 
 // metodo POST
 app.post('/projects', (request, response) => {
   const { title, owner } = request.body;
   
-  console.log(title);
-  console.log(owner);
+  const project = { id: uuid(), title, owner };
+
+  projects.push(project);
   
-  return response.json([
-    'Projeto 1',
-    'Projeto 2',
-    'Projeto 3',
-  ]);
+  return response.json(project);
 });
 
 // metodo PUT

@@ -1,15 +1,39 @@
 // importando o express
 const express = require('express');
-const { uuid } = require('uuidv4');
+const { uuid, isUuid } = require('uuidv4');
 
-// declarando a varival app
+// declarando a várival app
 const app = express();
 
 app.use(express.json());
 
 const projects = [];
 
-// metodo GET
+function logRequests(request, response, next) {
+  const { method, url } = request;
+
+  const logLabel = `[${method.toUpperCase()}] ${url}`;
+
+  console.log(logLabel);
+
+  return next();
+}
+
+// validar se o id é válido
+function validateProjectId(request, response, next) {
+  const { id } = request.params;
+
+  if (!isUuid(id)) {
+    return response.status(400).json({ error: 'Invalid project ID!' });
+  }
+
+  return next();
+}
+
+app.use(logRequests);
+app.use('/projects/:id', validateProjectId);
+
+// método GET
 app.get('/projects', (request, response) => {
   const { title } = request.query;
 
@@ -20,7 +44,7 @@ app.get('/projects', (request, response) => {
   return response.json(results);
 });
 
-// metodo POST
+// método POST
 app.post('/projects', (request, response) => {
   const { title, owner } = request.body;
   
@@ -31,7 +55,7 @@ app.post('/projects', (request, response) => {
   return response.json(project);
 });
 
-// metodo PUT
+// método PUT
 app.put('/projects/:id', (request, response) => {
   const { id } = request.params;
   const { title, owner } = request.body;
@@ -53,7 +77,7 @@ app.put('/projects/:id', (request, response) => {
   return response.json(project);
 });
 
-// metodo DELETE
+// meeodo DELETE
 app.delete('/projects/:id', (request, response) => {
   const { id } = request.params;
 
